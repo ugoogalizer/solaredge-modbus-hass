@@ -8,67 +8,88 @@ solaredge_modbus:
 
 utility_meter:
     solar_production_daily:
+      #friendly_name: "Solar Production Today"
       source: sensor.solaredge_lifetime_production
       cycle: daily
     solar_production_hourly:
+      #friendly_name: "Solar Production This Hour"
       source: sensor.solaredge_lifetime_production
       cycle: hourly
     solar_production_weekly:
+      #friendly_name: "Solar Production This Week"
       source: sensor.solaredge_lifetime_production
       cycle: weekly
     solar_production_monthly:
+      #friendly_name: "Solar Production Forever"
       source: sensor.solaredge_lifetime_production
+      cycle: monthly
+    # Sensors when SolarEdge Meter 1 is configured (and for when meter is configured in Export/Import mode)
+    power_consumption_daily:
+      #friendly_name: "Solar Production Today"
+      source: sensor.solaredge_lifetime_consumption
+      cycle: daily
+    power_consumption_hourly:
+      #friendly_name: "Solar Production This Hour"
+      source: sensor.solaredge_lifetime_consumption
+      cycle: hourly
+    power_consumption_weekly:
+      #friendly_name: "Solar Production This Week"
+      source: sensor.solaredge_lifetime_consumption
+      cycle: weekly
+    power_consumption_monthly:
+      #friendly_name: "Solar Production Forever"
+      source: sensor.solaredge_lifetime_consumption
       cycle: monthly
     
 sensor:
   - platform: template
     sensors:
-        solaredge_ac_total_current:
-            friendly_name: "AC Total Current"
+        solaredge_gen_ac_total_current:
+            friendly_name: "Generation AC Total Current"
             value_template: "{{ state_attr('sensor.solaredge_modbus', 'ac_total_current') }}"
             unit_of_measurement: 'A'
-        solaredge_ac_current_phase_a:
-            friendly_name: "AC Current Phase A"
+        solaredge_gen_ac_current_phase_a:
+            friendly_name: "Generation AC Current Phase A"
             value_template: "{{ state_attr('sensor.solaredge_modbus', 'ac_current_phase_a') }}"
             unit_of_measurement: 'A'
-        solaredge_ac_current_phase_b:
-            friendly_name: "AC Current Phase B"
+        solaredge_gen_ac_current_phase_b:
+            friendly_name: "Generation AC Current Phase B"
             value_template: "{{ state_attr('sensor.solaredge_modbus', 'ac_current_phase_b') }}"
             unit_of_measurement: 'A'
-        solaredge_ac_current_phase_c:
-            friendly_name: "AC Current Phase C"
+        solaredge_gen_ac_current_phase_c:
+            friendly_name: "Generation AC Current Phase C"
             value_template: "{{ state_attr('sensor.solaredge_modbus', 'ac_current_phase_c') }}"
             unit_of_measurement: 'A'
-        solaredge_ac_voltage_phase_ab:
-            friendly_name: "SolarEdge AC Output Voltage (A-B)"
+        solaredge_gen_ac_voltage_phase_ab:
+            friendly_name: "Generation AC Output Voltage (A-B)"
             value_template: "{{ state_attr('sensor.solaredge_modbus', 'ac_voltage_phase_ab') }}"
             unit_of_measurement: 'V'
-        solaredge_ac_current_voltage_a:
-            friendly_name: "AC Voltage Phase A"
+        solaredge_gen_ac_current_voltage_a:
+            friendly_name: "Generation AC Voltage Phase A"
             value_template: "{{ state_attr('sensor.solaredge_modbus', 'ac_voltage_phase_a') }}"
             unit_of_measurement: 'V'
-        solaredge_ac_current_voltage_b:
-            friendly_name: "AC Voltage Phase B"
+        solaredge_gen_ac_current_voltage_b:
+            friendly_name: "Generation AC Voltage Phase B"
             value_template: "{{ state_attr('sensor.solaredge_modbus', 'ac_voltage_phase_b') }}"
             unit_of_measurement: 'V'
-        solaredge_ac_current_voltage_c:
-            friendly_name: "AC Voltage Phase C"
+        solaredge_gen_ac_current_voltage_c:
+            friendly_name: "Generation AC Voltage Phase C"
             value_template: "{{ state_attr('sensor.solaredge_modbus', 'ac_voltage_phase_c') }}"
             unit_of_measurement: 'V'
-        solaredge_ac_power_output:
-            friendly_name: "AC Power Output"
+        solaredge_gen_ac_power_output:
+            friendly_name: "Generation AC Power Output"
             value_template: "{{ state_attr('sensor.solaredge_modbus', 'ac_power_output') }}"
             unit_of_measurement: 'W'
-        solaredge_dc_current:
-            friendly_name: "DC Current"
+        solaredge_gen_dc_current:
+            friendly_name: "Generation DC Current"
             value_template: "{{ state_attr('sensor.solaredge_modbus', 'dc_current') }}"
             unit_of_measurement: 'A'
-        solaredge_dc_voltage:
-            friendly_name: "DC Voltage"
+        solaredge_gen_dc_voltage:
+            friendly_name: "Generation DC Voltage"
             value_template: "{{ state_attr('sensor.solaredge_modbus', 'dc_voltage') }}"
             unit_of_measurement: 'V'
-        solaredge_dc_power_input:
-            friendly_name: "DC Power Input"
+        solaredge_gen_dc_power_input:
+            friendly_name: "Generation DC Power Input"
             value_template: "{{ state_attr('sensor.solaredge_modbus', 'dc_power_input') }}"
             unit_of_measurement: 'W'
         solaredge_heatsink_temp:
@@ -79,12 +100,12 @@ sensor:
             friendly_name: "Inverter efficiency"
             value_template: "{{ state_attr('sensor.solaredge_modbus', 'computed_inverter_efficiency') }}"
             unit_of_measurement: '%'
-        solaredge_ac_frequency:
-            friendly_name: "AC Frequency"
+        solaredge_gen_ac_frequency:
+            friendly_name: "Generation AC Frequency"
             value_template: "{{ state_attr('sensor.solaredge_modbus', 'ac_frequency') }}"
             unit_of_measurement: 'Hz'
-        solaredge_lifetime_production:
-            friendly_name: "Lifetime production"
+        solaredge_lifetime_generation:
+            friendly_name: "Lifetime generation"
             value_template: "{{ (state_attr('sensor.solaredge_modbus', 'ac_lifetimeproduction') / 1000.0) | round(2) }}"
             unit_of_measurement: 'kWh'
         solaredge_status:
@@ -109,3 +130,98 @@ sensor:
               {% else %}
                 Unknown
               {% endif %}
+      # Sensors when SolarEdge Meter 1 is configured (and for when meter is configured in Export/Import mode)
+        solaredge_con_ac_total_current:
+            friendly_name: "Consumption AC Total Current"
+            value_template: "{{ state_attr('sensor.solaredge_modbus_meter_1', 'ac_current') }}"
+            unit_of_measurement: 'A'
+        solaredge_con_ac_current_phase_a:
+            friendly_name: "Consumption AC Current Phase A"
+            value_template: "{{ state_attr('sensor.solaredge_modbus_meter_1', 'ac_current_phase_a') }}"
+            unit_of_measurement: 'A'
+        solaredge_con_ac_current_phase_b:
+            friendly_name: "Consumption AC Current Phase B"
+            value_template: "{{ state_attr('sensor.solaredge_modbus_meter_1', 'ac_current_phase_b') }}"
+            unit_of_measurement: 'A'
+        solaredge_con_ac_current_phase_c:
+            friendly_name: "Consumption AC Current Phase C"
+            value_template: "{{ state_attr('sensor.solaredge_modbus_meter_1', 'ac_current_phase_c') }}"
+            unit_of_measurement: 'A'
+        solaredge_con_ac_voltage_phase_ll:
+            friendly_name: "Consumption AC Output Voltage (L-L)"
+            value_template: "{{ state_attr('sensor.solaredge_modbus_meter_1', 'ac_voltage_phase_ll') }}"
+            unit_of_measurement: 'V'
+        solaredge_con_ac_voltage_ab:
+            friendly_name: "Consumption AC Voltage Phase (A-B)"
+            value_template: "{{ state_attr('sensor.solaredge_modbus_meter_1', 'ac_voltage_phase_ab') }}"
+            unit_of_measurement: 'V'
+        solaredge_con_ac_voltage_bc:
+            friendly_name: "Consumption AC Voltage Phase (B-C)"
+            value_template: "{{ state_attr('sensor.solaredge_modbus_meter_1', 'ac_voltage_phase_bc') }}"
+            unit_of_measurement: 'V'
+        solaredge_con_ac_voltage_ca:
+            friendly_name: "Consumption AC Voltage Phase (C-A)"
+            value_template: "{{ state_attr('sensor.solaredge_modbus_meter_1', 'ac_voltage_phase_ca') }}"
+            unit_of_measurement: 'V'
+        solaredge_con_ac_voltage_phase_ln:
+            friendly_name: "Consumption AC Output Voltage (L-L)"
+            value_template: "{{ state_attr('sensor.solaredge_modbus_meter_1', 'ac_voltage_phase_ln') }}"
+            unit_of_measurement: 'V'
+        solaredge_con_ac_voltage_an:
+            friendly_name: "Consumption AC Voltage Phase (A-N)"
+            value_template: "{{ state_attr('sensor.solaredge_modbus_meter_1', 'ac_voltage_phase_an') }}"
+            unit_of_measurement: 'V'
+        solaredge_con_ac_voltage_bn:
+            friendly_name: "Consumption AC Voltage Phase (B-N)"
+            value_template: "{{ state_attr('sensor.solaredge_modbus_meter_1', 'ac_voltage_phase_bn') }}"
+            unit_of_measurement: 'V'
+        solaredge_con_ac_voltage_cn:
+            friendly_name: "Consumption AC Voltage Phase (C-N)"
+            value_template: "{{ state_attr('sensor.solaredge_modbus_meter_1', 'ac_voltage_phase_cn') }}"
+            unit_of_measurement: 'V'
+        solaredge_con_ac_frequency:
+            friendly_name: "Consumption AC Frequency"
+            value_template: "{{ state_attr('sensor.solaredge_modbus_meter_1', 'ac_frequency') }}"
+            unit_of_measurement: 'Hz'
+        solaredge_exp_ac_power:
+            #It appears this value is positive when exporting and negative when importing
+            friendly_name: "Exported AC Power"
+            value_template: "{{ state_attr('sensor.solaredge_modbus_meter_1', 'ac_power_output') }}"
+            unit_of_measurement: 'W'
+        solaredge_con_ac_apparent_power:
+            friendly_name: "Consumption AC Apparent Power"
+            value_template: "{{ state_attr('sensor.solaredge_modbus_meter_1', 'ac_va') }}"
+            unit_of_measurement: 'VA'
+        solaredge_con_ac_reactive_power:
+            friendly_name: "Consumption AC Reactive Power"
+            value_template: "{{ state_attr('sensor.solaredge_modbus_meter_1', 'ac_var') }}"
+            unit_of_measurement: 'VAR'
+        solaredge_con_ac_power_factor:
+            friendly_name: "Consumption AC Average Power Factor"
+            value_template: "{{ state_attr('sensor.solaredge_modbus_meter_1', 'ac_pf') }}"
+            unit_of_measurement: '%'
+        solaredge_lifetime_exported:
+            friendly_name: "Lifetime Exported"
+            value_template: "{{ (state_attr('sensor.solaredge_modbus_meter_1', 'exported') / 1000.0) | round(2) }}"
+            unit_of_measurement: 'kWh'
+        solaredge_lifetime_imported:
+            friendly_name: "Lifetime Imported"
+            value_template: "{{ (state_attr('sensor.solaredge_modbus_meter_1', 'imported') / 1000.0) | round(2) }}"
+            unit_of_measurement: 'kWh'
+        #Ignoring the following consumption variables for now: 
+          #exported_va
+          #imported_va
+          #imported_var_q1
+          #imported_var_q2
+          #exported_var_q3
+          #exported_var_q4
+        #Calculate household consumption (Consumption=Generation-NettExport). Should always be positive
+        solaredge_con_ac_power_nett:
+            friendly_name: "Consumption AC Power"
+            value_template: "{{ ( state_attr('sensor.solaredge_modbus', 'ac_power_output') ) - ( state_attr('sensor.solaredge_modbus_meter_1', 'ac_power_output') ) }}"
+            unit_of_measurement: 'W'
+        #Calculate household consumption (Consumption=Generation+Import-Export). Should always be positive
+        solaredge_lifetime_consumption:
+            friendly_name: "Lifetime Consumed"
+            value_template: "{{ ( ( ( state_attr('sensor.solaredge_modbus', 'ac_lifetimeproduction') ) + ( state_attr('sensor.solaredge_modbus_meter_1', 'imported') ) - ( state_attr('sensor.solaredge_modbus_meter_1', 'exported') ) ) / 1000.0) | round(2) }}"
+            unit_of_measurement: 'kWh'
