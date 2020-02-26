@@ -9,19 +9,19 @@ solaredge_modbus:
 utility_meter:
     solar_production_daily:
       #friendly_name: "Solar Production Today"
-      source: sensor.solaredge_lifetime_production
+      source: sensor.solaredge_lifetime_generation
       cycle: daily
     solar_production_hourly:
       #friendly_name: "Solar Production This Hour"
-      source: sensor.solaredge_lifetime_production
+      source: sensor.solaredge_lifetime_generation
       cycle: hourly
     solar_production_weekly:
       #friendly_name: "Solar Production This Week"
-      source: sensor.solaredge_lifetime_production
+      source: sensor.solaredge_lifetime_generation
       cycle: weekly
     solar_production_monthly:
       #friendly_name: "Solar Production Forever"
-      source: sensor.solaredge_lifetime_production
+      source: sensor.solaredge_lifetime_generation
       cycle: monthly
     # Sensors when SolarEdge Meter 1 is configured (and for when meter is configured in Export/Import mode)
     power_consumption_daily:
